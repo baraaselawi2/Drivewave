@@ -1,0 +1,91 @@
+﻿@model rental.Models.UserAccount
+
+@{
+    ViewData["Title"] = "User Details";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+
+
+<!-- User Account Information Card -->
+<div class="card shadow-lg border-0">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">User Account Information</h4>
+    </div>
+    <div class="card-body p-5">
+        <dl class="row mb-4">
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.UserName)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.UserName)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.Phone)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Phone)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.Password)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Password)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.UserImage)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.UserImage)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.CreatDate)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.CreatDate)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.City)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.City)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.Gender)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Gender)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.Role)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Role)
+            </dd>
+        </dl>
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-outline-primary btn-lg mr-2" asp-action="Edit" asp-route-id="@Model?.UserId">
+                <i class="fas fa-edit mr-2"></i>Edit
+            </a>
+            <a class="btn btn-secondary btn-lg" asp-action="Index">
+                <i class="fas fa-arrow-left mr-2"></i>Back to List
+            </a>
+        </div>
+    </div>
+</div>

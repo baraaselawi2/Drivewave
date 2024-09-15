@@ -1,0 +1,92 @@
+﻿@model IEnumerable<rental.Models.Creditcard>
+
+@{
+    ViewData["Title"] = "Credit Cards";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<div class="container-fluid">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    <div class="row mb-4">
+        <div class="col">
+            <a asp-action="Create" class="btn btn-primary btn-lg">Create New Credit Card</a>
+        </div>
+    </div>
+
+    <!-- Credit Card Cards -->
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Name</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Card Number: @item.Cardnumber</h6>
+                            <p class="card-text">
+                                <strong>CVV:</strong> @(item.Cvv ?? "N/A") <br />
+                                <strong>Expiration Date:</strong> @item.Expiredate.ToString("MM/yyyy") <br />
+                                <strong>Balance:</strong> @(item.Balance.HasValue ? item.Balance.Value.ToString("C") : "N/A") <br />
+                                <strong>Email:</strong> @(item.Email ?? "N/A") <br />
+                                <strong>User ID:</strong> @(item.UseracountfkNavigation != null ? item.UseracountfkNavigation.UserId.ToString() : "N/A")
+                            </p>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p>No credit cards found.</p>
+        }
+    </div>
+</div>
+
+<style>
+    .container-fluid {
+        margin-top: 20px;
+    }
+
+    .btn-lg {
+        padding: 0.75rem 1.25rem;
+        font-size: 1.25rem;
+        line-height: 1.5;
+    }
+
+    .card {
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        overflow: hidden;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    }
+
+    .card-body {
+        padding: 1.25rem;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .card-subtitle {
+        font-size: 1rem;
+        color: #6c757d;
+    }
+
+    .card-text {
+        font-size: 0.875rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+    }
+</style>

@@ -1,0 +1,159 @@
+﻿@model IEnumerable<rental.Models.Creditcard>
+
+@{
+    ViewData["Title"] = "Credit Cards";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5" style="background-color: #f8f9fa;">
+    <h1 class="mb-4 text-center">@ViewData["Title"]</h1>
+
+    <!-- Credit Card Cards -->
+    <div class="row justify-content-center">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <div class="col-md-8 col-lg-6 mb-4">
+                    <div class="card credit-card animate__animated animate__zoomIn animate__delay-1s">
+                        <div class="card-body">
+                            <div class="credit-card-header">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa" class="visa-logo"/>
+                            </div>
+                            <div class="card-info">
+                                <h5 class="card-title">@item.Name</h5>
+                                <div class="card-number">
+                                    <h6 class="text-muted">Card Number:</h6>
+                                    <p>@item.Cardnumber</p>
+                                </div>
+                                <div class="card-details">
+                                    <strong>Balance:</strong> @(item.Balance.HasValue ? item.Balance.Value.ToString("C") : "N/A") <br />
+                                    <p><strong>CVV:</strong> @(item.Cvv ?? "N/A")</p>
+                                    <p><strong>Expiration Date:</strong> @item.Expiredate.ToString("MM/yyyy")</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-center">No credit cards found.</p>
+        }
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 1200px; /* Adjusted container width */
+    }
+
+    .card.credit-card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(135deg, red, black);
+        color: #fff;
+        position: relative;
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        transform-style: preserve-3d;
+        perspective: 1000px;
+        width: 100%; /* Full width of the column */
+        max-width: 600px; /* Increased max-width for larger cards */
+        margin: 0 auto; /* Center the card */
+    }
+
+    .card.credit-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .card-body {
+        padding: 2.5rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    .credit-card-header {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 1.5rem;
+    }
+
+    .visa-logo {
+        width: 120px; /* Larger logo */
+        animation: pulse 2s infinite;
+    }
+
+    .card-info {
+        position: relative;
+        z-index: 2;
+    }
+
+    .card-title {
+        font-size: 1.75rem;
+        margin-bottom: 1rem;
+        font-weight: bold;
+        text-shadow: 0 1px 3px white);
+    }
+
+    .card-number {
+        margin-bottom: 1.5rem;
+    }
+
+    .card-number h6 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-number p {
+        font-size: 1.75rem; /* Increased font size for card number */
+        font-weight: bold;
+        letter-spacing: 2px;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-details {
+        margin-bottom: 2rem;
+    }
+
+    .card-details p {
+        font-size: 1.1rem;
+    }
+
+    keyframes pulse {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.1);
+            opacity: 0.8;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    .animate__animated {
+        animation-duration: 1s;
+    }
+
+    .animate__zoomIn {
+        animation-name: zoomIn;
+    }
+
+    keyframes zoomIn {
+        from {
+            transform: scale(0.9);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+</style>

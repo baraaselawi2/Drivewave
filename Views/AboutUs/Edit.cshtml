@@ -1,0 +1,53 @@
+﻿@model rental.Models.AboutU
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Edit AboutU</h1>
+
+    <h4 class="mb-3">Update AboutU Details</h4>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                
+                <input type="hidden" asp-for="Id" />
+
+                <div class="form-group">
+                    <label asp-for="Text" class="form-label">Text</label>
+                    <input asp-for="Text" class="form-control" placeholder="Enter text" />
+                    <span asp-validation-for="Text" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Imagepath" class="form-label">Image Path</label>
+                    <input asp-for="Imagepath" class="form-control" placeholder="Enter image path" />
+                    <span asp-validation-for="Imagepath" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="ImageFile" class="form-label">Upload New Image</label>
+                    <input type="file" id="ImageFile" name="ImageFile" class="form-control" />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-4">
+                    <input type="submit" value="Save" class="btn btn-primary btn-lg" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

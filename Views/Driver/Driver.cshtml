@@ -1,0 +1,379 @@
+﻿@model IEnumerable<rental.Models.Trip>
+@{
+    ViewData["Title"] = "Driver Dashboard";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Driver Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body {
+            background-color: #eef2f7;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        /* Map container styling */
+#map-container {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+#map-container h5 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+#map-container iframe {
+    border: none;
+    width: 100%;
+    height: 400px;
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+
+        .welcome-banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
+            background-size: cover;
+            padding: 2rem;
+            border-radius: 1rem;
+        }
+
+            .welcome-banner h1 {
+                font-size: 2.5rem;
+                color: #fff;
+            }
+
+            .welcome-banner p {
+                font-size: 1.25rem;
+                color: #dcdcdc;
+            }
+
+        #sidebar {
+            background-color: #3a3f51;
+            color: #ffffff;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            padding: 1rem;
+            border-radius: 20px 0 0 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+            #sidebar a {
+                color: #ffffff;
+                text-decoration: none;
+                display: block;
+                padding: 10px;
+                border-radius: 10px;
+                margin-bottom: 10px;
+                transition: background 0.3s ease;
+            }
+
+                #sidebar a:hover {
+                    background-color: #495057;
+                    text-decoration: none;
+                }
+
+            #sidebar .sidebar-header {
+                margin-bottom: 2rem;
+                text-align: center;
+                font-size: 1.5rem;
+                font-weight: 600;
+            }
+
+        #content {
+            margin-left: 260px;
+            padding: 2rem;
+        }
+
+        .card {
+            border-radius: 1rem;
+            border: none;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
+        }
+
+        .card-body {
+            padding: 2rem;
+            border-radius: 0.75rem;
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-text {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            color: #007bff;
+            margin-bottom: 0.75rem;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2), 0 3px 6px rgba(0,0,0,0.15);
+        }
+
+        .btn {
+            border-radius: 1.5rem;
+            padding: 0.5rem 1.5rem;
+            font-size: 1rem;
+        }
+
+        .btn-success, .btn-danger {
+            background: linear-gradient(to right, #28a745, #218838);
+            border: none;
+        }
+
+        .btn-danger {
+            background: linear-gradient(to right, #dc3545, #c82333);
+            border: none;
+        }
+
+        .table thead {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        /* Chart container */
+        #chart-container {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="sidebar">
+        <div class="sidebar-header">
+            <h3>Driver Dashboard</h3>
+        </div>
+        <ul class="list-unstyled">
+            <li><a href="@Url.Action("Driver", "Driver")"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="@Url.Action("Profile", "Driver")"><i class="fas fa-user"></i> Profile</a></li>
+            <li>
+                <form action="/LogReg/Logout" method="post">
+                    <button type="submit" class="btn btn-danger btn-block"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        <div class="container">
+            <div class="container mt-4">
+                <div class="page-header text-center mb-4">
+                    <div class="welcome-banner">
+                        <h1 class="display-4 font-weight-bold text-white">Welcome, Driver!</h1>
+                        <p class="lead text-white">You're doing great! Check out your stats and pending trips below.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <!-- Total Revenue Card -->
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <i class="fas fa-dollar-sign card-icon"></i>
+                            <h5 class="card-title">Total Revenue</h5>
+                            <p class="card-text">@ViewBag.TotalRevenue</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accepted Trips Card -->
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <i class="fas fa-check card-icon"></i>
+                            <h5 class="card-title">Accepted Trips</h5>
+                            <p class="card-text">@ViewBag.NumberOfAcceptedTrips</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Trips Section -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Pending Trips</h5>
+                            @if (Model.Any())
+                            {
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Car</th>
+                                            <th scope="col">User</th>
+                                            <th scope="col">Phone</th>
+                                            <th scope="col">Pickup Location</th>
+                                            <th scope="col">Drop Location</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var trip in Model)
+                                        {
+                                            <tr>
+                                                <td>@trip.CarIdfkNavigation?.CarName</td>
+                                                <td>@trip.UserIdfkNavigation?.UserName</td>
+                                                <td>@trip.UserIdfkNavigation?.Phone</td>
+                                                <td>@trip.LocationPickup</td>
+                                                <td>@trip.LocationDrop</td>
+                                                <td>@trip.Status</td>
+                                                <td>
+                                                    <form method="post" asp-action="AcceptTrip" asp-route-id="@trip.TripId" class="d-inline">
+                                                        <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                                    </form>
+                                                    <form method="post" asp-action="RejectTrip" asp-route-id="@trip.TripId" class="d-inline">
+                                                        <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <p class="text-center">No pending trips available.</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+                    <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Accepted Trips</h5>
+                           
+                            
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Car</th>
+                                            <th scope="col">User</th>
+                                        <th scope="col">Phone</th>
+                                            <th scope="col">Pickup Location</th>
+                                            <th scope="col">Drop Location</th>
+                                            <th scope="col">Status</th>
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var trip in ViewBag.acceptedTrips)
+                                        {
+                                            <tr>
+                                                <td>@trip.CarIdfkNavigation?.CarName</td>
+                                                <td>@trip.UserIdfkNavigation?.UserName</td>
+                                            <td>@trip.UserIdfkNavigation?.Phone</td>
+                                                <td>@trip.LocationPickup</td>
+                                                <td>@trip.LocationDrop</td>
+                                                <td>@trip.Status</td>
+                                               
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart Container -->
+            <div id="chart-container" class="row">
+                <div class="col-12">
+                    <canvas id="tripChart"></canvas>
+                </div>
+            </div>
+              <div id="map-container">
+    <h5 class="card-title">Pickup and Drop-off Locations</h5>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3492699.8392151115!2d39.764213023683375!3d31.252860978637614!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15006f476664de99%3A0x8d285b0751264e99!2z2KfZhNij2LHYr9mG!5e0!3m2!1sar!2sjo!4v1724961533621!5m2!1sar!2sjo" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+        </div>
+
+
+    </div>
+  
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Chart.js code to render the chart
+        var ctx = document.getElementById('tripChart').getContext('2d');
+        var tripChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Total Revenue', 'Accepted Trips', 'Pending Trips'],
+                datasets: [{
+                    label: 'Statistics',
+                    data: [@ViewBag.TotalRevenue, @ViewBag.NumberOfAcceptedTrips, @ViewBag.NumberOfPendingTrips],
+                    backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+                    borderColor: ['rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

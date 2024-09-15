@@ -1,0 +1,575 @@
+﻿@model IEnumerable<rental.Models.Trip>
+@{
+    ViewData["Title"] = "Trip Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<!-- Leaflet Control Geocoder -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+<!-- Carousel Start -->
+<div class="header-carousel">
+    <div id="carouselId" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+        <ol class="carousel-indicators">
+            <li data-bs-target="#carouselId" data-bs-slide-to="0" class="active" aria-current="true" aria-label="First slide"></li>
+            <li data-bs-target="#carouselId" data-bs-slide-to="1" aria-label="Second slide"></li>
+        </ol>
+        <div class="carousel-inner" role="listbox">
+            <!-- Carousel Item 1 -->
+            <div class="carousel-item active">
+                <img src="~/img/g_class2.jpg" class="img-fluid w-100" alt="First slide" />
+                <div class="carousel-caption d-none d-md-block">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-6 offset-lg-0 col-md-8 offset-md-2">
+                                <div class="bg-dark text-light rounded p-5 shadow">
+                                    <h4 class="text-light mb-4 text-start">CONTINUE CAR RESERVATION</h4>
+                                    <form asp-action="Reserve" method="post" id="reservationForm">
+                                        <div class="row g-3">
+                                            <!-- Car Type Selection -->
+                                            <div class="col-12">
+                                                <label for="carIdfk" class="form-label text-light">Select Your Car Type</label>
+                                                <select class="form-select" id="carIdfk" name="CarIdfk" aria-label="Car Type" required>
+                                                    <option value="" disabled selected>Select Your Car type</option>
+                                                    @if (ViewBag.CarIdfk != null)
+                                                    {
+                                                        foreach (var car in (SelectList)ViewBag.CarIdfk)
+                                                        {
+                                                            <option value="@car.Value">@car.Text</option>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <option disabled>No cars available</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <!-- Pickup and Dropoff Locations -->
+                                            <div class="col-12">
+                                                <label for="locationPickup" class="form-label text-light">Pick Up Location</label>
+                                                <input class="form-control" id="locationPickup" name="LocationPickup" type="text" placeholder="Click to select on map" aria-label="Pick Up Location" readonly required>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="locationDrop" class="form-label text-light">Drop Off Location</label>
+                                                <input class="form-control" id="locationDrop" name="LocationDrop" type="text" placeholder="Click to select on map" aria-label="Drop Off Location" readonly required>
+                                            </div>
+
+                                            <!-- Pickup and Dropoff Date/Time -->
+                                            <div class="col-md-6">
+                                                <label for="pickupDate" class="form-label text-light">Pick Up Date</label>
+                                                <input class="form-control" id="pickupDate" name="PickupDate" type="date" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="pickupTime" class="form-label text-light">Pick Up Time</label>
+                                                <div class="d-flex">
+                                                    <select class="form-select me-2" id="pickupHour" name="PickupHour" aria-label="Pickup Hour" required>
+                                                        @for (int i = 1; i <= 12; i++)
+                                                        {
+                                                            <option value="@i">@i:00</option>
+                                                        }
+                                                    </select>
+                                                    <select class="form-select" id="pickupPeriod" name="PickupPeriod" aria-label="AM/PM" required>
+                                                        <option value="AM" selected>AM</option>
+                                                        <option value="PM">PM</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="dropoffDate" class="form-label text-light">Drop Off Date</label>
+                                                <input class="form-control" id="dropoffDate" name="DropoffDate" type="date" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="dropoffTime" class="form-label text-light">Drop Off Time</label>
+                                                <div class="d-flex">
+                                                    <select class="form-select me-2" id="dropoffHour" name="DropoffHour" aria-label="Dropoff Hour" required>
+                                                        @for (int i = 1; i <= 12; i++)
+                                                        {
+                                                            <option value="@i">@i:00</option>
+                                                        }
+                                                    </select>
+                                                    <select class="form-select" id="dropoffPeriod" name="DropoffPeriod" aria-label="AM/PM" required>
+                                                        <option value="AM" selected>AM</option>
+                                                        <option value="PM">PM</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <button class="btn btn-primary w-100 py-2" type="submit">Book Now</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 d-none d-lg-flex fadeInRight animated" data-animation="fadeInRight" data-delay="1s" style="animation-delay: 1s;">
+                                <div class="text-start">
+                                    <h1 class="display-5 text-white">Get 15% off your rental Plan your trip now</h1>
+                                    <p>Treat yourself in Jordan</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Additional carousel items can be added here -->
+        </div>
+    </div>
+</div>
+
+<!-- Map Modal -->
+<div class="modal fade" id="mapModal" tabindex="-1" aria-labelledby="mapModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mapModalLabel">Select Location</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="map" style="height: 500px;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirmLocation">Confirm Location</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var map, marker;
+    var selectedInput;
+    var geocoder;
+
+    function initMap() {
+        map = L.map('map').setView([32.556, 35.85], 13); // Default view centered on Irbid
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Add geocoder control
+        geocoder = L.Control.Geocoder.nominatim();
+        L.Control.geocoder().addTo(map);
+
+        map.on('click', function (e) {
+            if (marker) {
+                marker.setLatLng(e.latlng);
+            } else {
+                marker = L.marker(e.latlng).addTo(map);
+            }
+
+            geocoder.reverse(e.latlng, map.options.crs.scale(map.getZoom()), function (results) {
+                var result = results[0];
+                if (result) {
+                    var placeName = result.name;
+                    document.getElementById(selectedInput).value = placeName;
+                }
+            });
+        });
+    }
+
+    function showMap(inputId) {
+        selectedInput = inputId;
+        $('#mapModal').modal('show');
+        setTimeout(function () {
+            map.invalidateSize(); // Fix map size issues on modal open
+        }, 500);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('locationPickup').addEventListener('click', function () {
+            showMap('locationPickup');
+        });
+
+        document.getElementById('locationDrop').addEventListener('click', function () {
+            showMap('locationDrop');
+        });
+
+        document.getElementById('confirmLocation').addEventListener('click', function () {
+            if (marker) {
+                var latLng = marker.getLatLng();
+                geocoder.reverse(latLng, map.options.crs.scale(map.getZoom()), function (results) {
+                    var result = results[0];
+                    if (result) {
+                        var placeName = result.name;
+                        document.getElementById(selectedInput).value = placeName;
+                    }
+                });
+                $('#mapModal').modal('hide');
+            }
+        });
+
+        initMap();
+    });
+
+    
+</script>
+
+
+<!-- Carousel End -->
+
+        <a class="carousel-control-prev" href="#carouselId" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselId" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </a>
+    </div>
+</div>
+<div class="container-fluid categories py-5">
+    <div class="container py-5">
+        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+            <h1 class="display-5 text-capitalize mb-3">Vehicle <span class="text-primary">Categories</span></h1>
+            <p class="mb-0">
+                <h4>  Versatile and practical, our Cars provide additional cargo space and a comfortable ride</h4>
+            </p>
+        </div>
+        <div class="categories-carousel owl-carousel wow fadeInUp" data-wow-delay="0.1s">
+            @foreach (var car in ViewBag.Cars)
+            {
+                <div class="categories-item p-4">
+                    <div class="categories-item-inner">
+                        <div class="categories-img rounded-top">
+                            @if (!string.IsNullOrEmpty(car.Imagepath))
+                            {
+                                <img src="~/img/@car.Imagepath" class="img-fluid w-100 rounded-top" alt="@car.CarName">
+                            }
+                            else
+                            {
+                                <img src="~/img/default-car.png" class="img-fluid w-100 rounded-top" alt="Default Car Image">
+                            }
+                        </div>
+                        <div class="categories-content rounded-bottom p-4">
+                            <h4>@car.CarName</h4>
+                            <div class="categories-review mb-4">
+                                <!-- Assuming you might have a rating system, adjust as needed -->
+                                <div class="me-3">No Reviews</div>
+                                <div class="d-flex justify-content-center text-secondary">
+                                    <!-- Example static stars, adjust as necessary -->
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                @if (decimal.TryParse(car.CarValue2, out decimal dailyRate))
+                                {
+                                    <h4 class="bg-white text-primary rounded-pill py-2 px-4 mb-0">@string.Format("${0:0.00}/Day", dailyRate)</h4>
+                                }
+                                else
+                                {
+                                    <h4 class="bg-white text-primary rounded-pill py-2 px-4 mb-0">Price Not Available</h4>
+                                }
+                            </div>
+                            <div class="row gy-2 gx-0 text-center mb-4">
+                                <div class="col-4 border-end border-white">
+                                    <i class="fa fa-users text-dark"></i> <span class="text-body ms-1">@car.CarSet Seat</span>
+                                </div>
+                                <div class="col-4 border-end border-white">
+                                    <!-- You might want to display car transmission type here -->
+                                    <i class="fa fa-car text-dark"></i> <span class="text-body ms-1">Auto</span>
+                                </div>
+                                <div class="col-4">
+                                    <!-- You might want to display fuel type here -->
+                                    <i class="fa fa-gas-pump text-dark"></i> <span class="text-body ms-1">Fuel Type</span>
+                                </div>
+                                <div class="col-4 border-end border-white">
+                                    <i class="fa fa-car text-dark"></i> <span class="text-body ms-1">@car.CarColor</span>
+                                </div>
+                                <div class="col-4 border-end border-white">
+                                    <!-- Display manufacture year if available -->
+                                    <i class="fa fa-calendar text-dark"></i> <span class="text-body ms-1">@car.CarValue3</span>
+                                </div>
+                                <div class="col-4">
+                                    <!-- Display mileage if available -->
+                                    <i class="fa fa-road text-dark"></i> <span class="text-body ms-1">@car.CarValue3</span>
+                                </div>
+                            </div>
+                            <a href="@Url.Action("Index", "Home")" class="btn btn-primary rounded-pill d-flex justify-content-center py-3">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!-- Features Start -->
+<div class="container-fluid feature py-5">
+    <div class="container py-5">
+        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+            <h1 class="display-5 text-capitalize mb-3">Central <span class="text-primary">Features</span></h1>
+            <p class="mb-0">
+                <h4> Discover our top-notch services designed for your convenience and satisfaction. From exceptional first-class amenities and 24/7 road assistance to affordable quality and free pick-up & drop-off, we ensure a seamless experience tailored to your needs.</h4>
+            </p>
+        </div>
+        <div class="row g-4 align-items-center">
+            <div class="col-xl-4">
+                <div class="row gy-4 gx-0">
+                    <div class="col-12 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <span class="fa fa-trophy fa-2x"></span>
+                            </div>
+                            <div class="ms-4">
+                                <h5 class="mb-3">First Class Services</h5>
+                                <p class="mb-0"><h6>Exceptional service with top-notch amenities.</h6></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <span class="fa fa-road fa-2x"></span>
+                            </div>
+                            <div class="ms-4">
+                                <h5 class="mb-3">24/7 Road Assistance</h5>
+                                <p class="mb-0"><h6>Continuous support and help on the road at any time.</h6></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-xl-4 wow fadeInUp" data-wow-delay="0.2s">
+                <img src="~/img/features-img.png" class="img-fluid w-100" style="object-fit: cover;" alt="Img">
+            </div>
+            <div class="col-xl-4">
+                <div class="row gy-4 gx-0">
+                    <div class="col-12 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="feature-item justify-content-end">
+                            <div class="text-end me-4">
+                                <h5 class="mb-3">Quality at Minimum</h5>
+                                <p class="mb-0"><h6>High quality service at affordable rates.</h6></p>
+                            </div>
+                            <div class="feature-icon">
+                                <span class="fa fa-tag fa-2x"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="feature-item justify-content-end">
+                            <div class="text-end me-4">
+                                <h5 class="mb-3">Free Pick-Up & Drop-Off</h5>
+                                <p class="mb-0"><h6>Complimentary pick-up and drop-off services included.</h6></p>
+                            </div>
+                            <div class="feature-icon">
+                                <span class="fa fa-map-pin fa-2x"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features End -->
+
+<div class="container-fluid service py-5" style="background-color: #f8f9fa;">
+    <div class="container py-5">
+        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+            <h1 class="display-5 text-capitalize mb-3">Cental <span class="text-primary">Services</span></h1>
+            <p class="mb-0">
+                <h5> Discover the exceptional range of services we offer, designed to meet your every need with efficiency and excellence. From seamless reservations to comprehensive insurance, we’ve got you covered.</h5>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="service-item p-4">
+                    <div class="service-icon mb-4">
+                        <i class="fa fa-phone-alt fa-2x"></i>
+                    </div>
+                    <h5 class="mb-3">Phone Reservation</h5>
+                    <p class="mb-0"><h6>Quick and personalized bookings over the phone for your convenience</h6></p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="service-item p-4">
+                    <div class="service-icon mb-4">
+                        <i class="fa fa-money-bill-alt fa-2x"></i>
+                    </div>
+                    <h5 class="mb-3">Special Rates</h5>
+                    <p class="mb-0"><h6>Exclusive deals and rates to give you the best value</h6></p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="service-item p-4">
+                    <div class="service-icon mb-4">
+                        <i class="fa fa-road fa-2x"></i>
+                    </div>
+                    <h5 class="mb-3">One Way Rental</h5>
+                    <p class="mb-0"><h6>Flexible pick-up and drop-off locations for seamless travel</h6></p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="service-item p-4">
+                    <div class="service-icon mb-4">
+                        <i class="fa fa-umbrella fa-2x"></i>
+                    </div>
+                    <h5 class="mb-3">Life Insurance</h5>
+                    <p class="mb-0"><h6>Comprehensive coverage to ensure peace of mind</h6></p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="service-item p-4">
+                    <div class="service-icon mb-4">
+                        <i class="fa fa-building fa-2x"></i>
+                    </div>
+                    <h5 class="mb-3">City to City</h5>
+                    <p class="mb-0"><h6>Effortless travel between cities with our reliable service</h6></p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="service-item p-4">
+                    <div class="service-icon mb-4">
+                        <i class="fa fa-car-alt fa-2x"></i>
+                    </div>
+                    <h5 class="mb-3">Free Rides</h5>
+                    <p class="mb-0"><h6>Enjoy complimentary rides with select services</h6></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Header End -->
+<!-- About Start -->
+<div class="container-fluid overflow-hidden about py-5" style="background-color: #f8f9fa;">
+    <div class="container py-5">
+        <div class="row g-5">
+            <div class="col-xl-6 wow fadeInLeft" data-wow-delay="0.2s">
+                <div class="about-item">
+                    <div class="pb-5">
+                        <h1 class="display-5 text-capitalize">About <span class="text-primary">Us</span></h1>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="about-item-inner border p-4">
+                                <div class="about-icon mb-4">
+                                    <img src="~/img/about-icon-1.png" class="img-fluid w-50 h-50" alt="Vision Icon">
+                                </div>
+                                <h5 class="mb-3">Our Vision</h5>
+                                <p class="mb-0">To offer exceptional car rental experiences with a focus on quality, reliability, and customer satisfaction.</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="about-item-inner border p-4">
+                                <div class="about-icon mb-4">
+                                    <img src="~/img/about-icon-2.png" class="img-fluid h-50 w-50" alt="Mission Icon">
+                                </div>
+                                <h5 class="mb-3">Our Mission</h5>
+                                <p class="mb-0">To provide a wide range of well-maintained vehicles and exceptional service, ensuring a seamless and enjoyable rental experience.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-item my-4">
+                        Our goal is to make car rentals as convenient and pleasant as possible. With a diverse fleet of vehicles and a commitment to excellent service, we aim to meet all your transportation needs.
+                    </p>
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="text-center rounded bg-secondary p-4">
+                                <h1 class="display-6 text-white">3</h1>
+                                <h5 class="text-light mb-0">Years in Business</h5>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="rounded">
+                                <p class="mb-2"><i class="fa fa-check-circle text-primary me-1"></i> Wide Selection of Vehicles</p>
+                                <p class="mb-2"><i class="fa fa-check-circle text-primary me-1"></i> Competitive Pricing</p>
+                                <p class="mb-2"><i class="fa fa-check-circle text-primary me-1"></i> Easy Booking Process</p>
+                                <p class="mb-0"><i class="fa fa-check-circle text-primary me-1"></i> Excellent Customer Support</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 d-flex align-items-center">
+                            <a href="#" class="btn btn-primary rounded py-3 px-5">Learn More About Us</a>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="d-flex align-items-center">
+                                <img src="~/img/friend.jpg" class="img-fluid rounded-circle border border-4 border-secondary" style="width: 100px; height: 100px;" alt="Team Member">
+                                <div class="ms-4">
+                                    <h4>Baraa & Ali</h4>
+                                    <p class="mb-0">BAU-HOUSN Students</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 wow fadeInRight" data-wow-delay="0.2s">
+                <div class="about-img">
+                    <div class="img-1">
+                        <img src="~/img/about-img.jpg" class="img-fluid rounded h-100 w-100" alt="Car Rental Image 1">
+                    </div>
+                    <div class="img-2">
+                        <img src="~/img/Mercedes-1.jpg" class="img-fluid rounded w-100" alt="Car Rental Image 2">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Team Section Start -->
+<div class="container-fluid team py-5">
+    <div class="container py-5">
+        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+            <h1 class="display-5 text-capitalize mb-3">Customer<span class="text-primary"> Support</span> Center</h1>
+            <p class="mb-0">
+                <h5> Our customer service is dedicated to providing prompt and friendly support for all your needs.</h5>
+            </p>
+
+        </div>
+        <div class="row g-4">
+            @if (ViewBag.TeamMembers != null)
+            {
+                foreach (var user in (IEnumerable<UserAccount>)ViewBag.TeamMembers)
+                {
+                    <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="team-item p-4 pt-0">
+                            <div class="team-img">
+                                <img src="~/img/@user.UserImage" class="img-fluid rounded w-100" alt="@user.UserName">
+                            </div>
+                            <div class="team-content pt-4">
+                                <h4>@user.UserName</h4>
+                                <p>@user.Role</p>
+                                <div class="team-icon d-flex justify-content-center">
+                                    <a class="btn btn-square btn-light rounded-circle mx-1" href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a class="btn btn-square btn-light rounded-circle mx-1" href="#"><i class="fab fa-twitter"></i></a>
+                                    <a class="btn btn-square btn-light rounded-circle mx-1" href="#"><i class="fab fa-instagram"></i></a>
+                                    <a class="btn btn-square btn-light rounded-circle mx-1" href="#"><i class="fab fa-linkedin-in"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+<script>
+
+function setMinDateAndTime() {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = ("0" + (now.getMonth() + 1)).slice(-2);
+        var day = ("0" + now.getDate()).slice(-2);
+        var minDate = year + "-" + month + "-" + day;
+        var minTime = now.getHours() + ":" + ("0" + now.getMinutes()).slice(-2);
+
+        document.getElementById('pickupDate').setAttribute('min', minDate);
+        document.getElementById('dropoffDate').setAttribute('min', minDate);
+        document.getElementById('pickupTime').setAttribute('min', minTime);
+        document.getElementById('dropoffTime').setAttribute('min', minTime);
+    }
+
+    document.addEventListener('DOMContentLoaded', setMinDateAndTime);
+</script>

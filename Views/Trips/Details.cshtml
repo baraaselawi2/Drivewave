@@ -1,0 +1,78 @@
+﻿@model rental.Models.Trip
+
+@{
+    ViewData["Title"] = "Trip Details";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<!-- Page Title -->
+
+
+<!-- Trip Information Card -->
+<div class="card shadow-lg border-0">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Trip Information</h4>
+    </div>
+    <div class="card-body p-5">
+        <dl class="row mb-4">
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.StartTime)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.StartTime)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.EndTime)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.EndTime)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.LocationPickup)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.LocationPickup)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.LocationDrop)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.LocationDrop)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.CarIdfkNavigation)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.CarIdfkNavigation.CarId)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.UserIdfkNavigation)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.UserIdfkNavigation.UserId)
+            </dd>
+        </dl>
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-outline-primary btn-lg mr-2" asp-action="Edit" asp-route-id="@Model?.TripId">
+                <i class="fas fa-edit mr-2"></i>Edit
+            </a>
+            <a class="btn btn-secondary btn-lg" asp-action="Index">
+                <i class="fas fa-arrow-left mr-2"></i>Back to List
+            </a>
+        </div>
+    </div>
+</div>

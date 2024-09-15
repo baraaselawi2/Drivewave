@@ -1,0 +1,78 @@
+﻿@model rental.Models.Car
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Create Car</h1>
+
+    <h4 class="mb-3">Car Details</h4>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                <div class="form-group">
+                    <label asp-for="CarNumber" class="form-label"></label>
+                    <input asp-for="CarNumber" class="form-control" placeholder="Enter car number" />
+                    <span asp-validation-for="CarNumber" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="CarName" class="form-label"></label>
+                    <input asp-for="CarName" class="form-control" placeholder="Enter car name" />
+                    <span asp-validation-for="CarName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="CarColor" class="form-label"></label>
+                    <input asp-for="CarColor" class="form-control" placeholder="Enter car color" />
+                    <span asp-validation-for="CarColor" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="CarSet" class="form-label"></label>
+                    <input asp-for="CarSet" class="form-control" placeholder="Enter car set" />
+                    <span asp-validation-for="CarSet" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="CarValue2" class="form-label"></label>
+                    <input asp-for="CarValue2" class="form-control" placeholder="Enter car value 2" />
+                    <span asp-validation-for="CarValue2" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="CarValue3" class="form-label"></label>
+                    <input asp-for="CarValue3" class="form-control" placeholder="Enter car value 3" />
+                    <span asp-validation-for="CarValue3" class="text-danger"></span>
+                </div>
+
+                <!-- Image Upload Field -->
+                <div class="form-group">
+                    <label for="CarImage" class="form-label">Upload Car Image</label>
+                    <input type="file" id="CarImage" name="CarImage" class="form-control" />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-4">
+                    <input type="submit" value="Create" class="btn btn-primary btn-lg" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

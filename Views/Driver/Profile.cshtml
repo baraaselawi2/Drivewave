@@ -1,0 +1,237 @@
+﻿@model rental.Models.UserAccount
+@{
+    ViewData["Title"] = "User Profile";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom Styles -->
+    <style>
+        body {
+            display: flex;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+        }
+
+        #sidebar {
+            background-color: #343a40;
+            color: #ffffff;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            padding: 2rem 1rem;
+            border-radius: 20px 0 0 20px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.15);
+        }
+
+            #sidebar ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            #sidebar a {
+                color: #ffffff;
+                text-decoration: none;
+                display: block;
+                padding: 12px 20px;
+                border-radius: 10px;
+                margin-bottom: 12px;
+                transition: background 0.3s ease, transform 0.2s;
+            }
+
+                #sidebar a:hover {
+                    background-color: #495057;
+                    transform: translateX(5px);
+                }
+
+            #sidebar .sidebar-header {
+                margin-bottom: 2.5rem;
+                text-align: center;
+                font-size: 1.6rem;
+                font-weight: 700;
+                color: #ffff;
+            }
+
+        button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+            button:hover {
+                background-color: #c82333;
+                transform: scale(1.05);
+            }
+
+        .content {
+            flex: 1;
+            padding: 3rem;
+            margin-left: 250px;
+        }
+
+        .card {
+            border-radius: 1rem;
+            border: none;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            transition: box-shadow 0.3s;
+        }
+
+            .card:hover {
+                box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+            }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            color: #343a40;
+        }
+
+        .font-weight-bold {
+            font-weight: 700;
+        }
+
+        .text-primary {
+            color: #007bff;
+        }
+
+        .text-muted {
+            color: #6c757d;
+        }
+
+        .rounded-circle {
+            border: 5px solid #007bff;
+            transition: transform 0.3s;
+        }
+
+            .rounded-circle:hover {
+                transform: scale(1.1);
+            }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .profile-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .profile-details {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .profile-info {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+            .profile-info:last-child {
+                margin-bottom: 0;
+                border-bottom: none;
+            }
+
+            .profile-info div {
+                font-size: 1rem;
+                color: #343a40;
+            }
+
+            .profile-info .label {
+                font-weight: bold;
+                width: 30%;
+            }
+
+            .profile-info .value {
+                width: 70%;
+                color: #6c757d;
+            }
+    </style>
+</head>
+<body>
+    <div id="sidebar">
+        <div class="sidebar-header">
+            <h3>Driver Dashboard</h3>
+        </div>
+        <ul class="list-unstyled">
+            <li><a href="@Url.Action("Driver", "Driver")"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="@Url.Action("Profile", "Driver")"><i class="fas fa-user"></i> Profile</a></li>
+            <li>
+                <form action="/LogReg/Logout" method="post">
+                    <button type="submit" class="btn btn-danger btn-block"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <!-- User Profile Start -->
+        <div class="profile-container">
+            <div class="card">
+                <div class="card-body text-center">
+                    @if (!string.IsNullOrEmpty(Model.UserImage))
+                    {
+                        <img src="~/img/@Model.UserImage" alt="avatar" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                    }
+                    else
+                    {
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                    }
+                    <h5 style="margin-top: 1.5rem; color: #007bff; font-weight: bold;">@Model.UserName</h5>
+                    <p style="color: #6c757d; margin-bottom: 0;">@Model.Email</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-details">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Profile Details</h4>
+                    <div class="profile-info">
+                        <div class="label">Full Name:</div>
+                        <div class="value">@Model.UserName</div>
+                    </div>
+                    <div class="profile-info">
+                        <div class="label">Email:</div>
+                        <div class="value">@Model.Email</div>
+                    </div>
+                    <div class="profile-info">
+                        <div class="label">Phone:</div>
+                        <div class="value">@Model.Phone</div>
+                    </div>
+                    <div class="profile-info">
+                        <div class="label">Location:</div>
+                        <div class="value">@Model.City</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

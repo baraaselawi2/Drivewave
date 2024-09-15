@@ -1,0 +1,127 @@
+﻿@model IEnumerable<rental.Models.Trip>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<div class="container-fluid">
+    <!-- Header and Create Button -->
+    <div class="row mb-4">
+        <div class="col">
+            <a asp-action="Create" class="btn btn-primary btn-lg">Create New Trip</a>
+        </div>
+    </div>
+
+    <!-- Display additional information from ViewData -->
+    <div class="row mb-4">
+      
+        @if (ViewData["UserSpecificTrips"] != null)
+        {
+            <div class="col-md-6">
+                <div class="alert alert-warning">
+                    <strong>Trips for Specific User:</strong> @ViewData["UserSpecificTrips"]
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Trips Cards -->
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.CarIdfkNavigation?.CarName </h5>
+                            <h6 class="card-subtitle mb-2 text-muted">@item.UserIdfkNavigation?.UserId</h6>
+                            <p class="card-text">
+                                <strong>Start Time:</strong> @item.StartTime <br />
+                                <strong>End Time:</strong> @item.EndTime <br />
+                                <strong>Pickup Location:</strong> @item.LocationPickup <br />
+                                <strong>Pickup Location:</strong> @item.Status <br />
+                                <strong>Drop Location:</strong> @item.LocationDrop
+                            </p>
+                            <a asp-action="Edit" asp-route-id="@item.TripId" class="btn btn-warning btn-sm">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.TripId" class="btn btn-info btn-sm">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.TripId" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-info">
+                    No trips available.
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .container-fluid {
+        margin-top: 20px;
+    }
+
+    .btn-lg {
+        padding: 0.75rem 1.25rem;
+        font-size: 1.25rem;
+        line-height: 1.5;
+    }
+
+    .alert-info {
+        background-color: #d9edf7;
+        color: #31708f;
+        border-color: #bce8f1;
+        border-radius: 0.25rem;
+    }
+
+    .alert-warning {
+        background-color: #fcf8e3;
+        color: #8a6d3b;
+        border-color: #faebcc;
+        border-radius: 0.25rem;
+    }
+
+    .card {
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+    }
+
+    .card-body {
+        padding: 1.25rem;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .card-subtitle {
+        font-size: 1rem;
+        color: #6c757d;
+    }
+
+    .card-text {
+        font-size: 0.875rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+    }
+
+    .card-footer {
+        background-color: #f8f9fa;
+        border-top: 1px solid #dee2e6;
+        padding: 0.75rem;
+        text-align: right;
+    }
+</style>

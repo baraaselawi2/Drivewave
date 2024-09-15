@@ -1,0 +1,78 @@
+﻿@model rental.Models.Car
+
+@{
+    ViewData["Title"] = "Car Details";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<!-- Page Title -->
+
+
+<!-- Car Information Card -->
+<div class="card shadow-lg border-0">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Car Information</h4>
+    </div>
+    <div class="card-body p-5">
+        <dl class="row mb-4">
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.CarNumber)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.CarNumber)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.CarName)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.CarName)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.CarColor)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.CarColor)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.CarSet)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.CarSet)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.Imagepath)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Imagepath)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.CarValue2)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.CarValue2)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.CarValue3)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.CarValue3)
+            </dd>
+        </dl>
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-outline-primary btn-lg mr-2" asp-action="Edit" asp-route-id="@Model?.CarId">
+                <i class="fas fa-edit mr-2"></i>Edit
+            </a>
+            <a class="btn btn-secondary btn-lg" asp-action="Index">
+                <i class="fas fa-arrow-left mr-2"></i>Back to List
+            </a>
+        </div>
+    </div>
+</div>

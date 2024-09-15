@@ -1,0 +1,54 @@
+﻿@model rental.Models.Testimonial
+
+@{
+    ViewData["Title"] = "Create Testimonial";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Container Start -->
+<div class="container mt-5" style="background-color: #f9f9f9;">
+    <!-- Header Section -->
+    <div class="text-center mb-4">
+        <h1 class="display-3 text-primary font-weight-bold animate__animated animate__fadeIn animate__delay-0.5s">Share Your Experience</h1>
+        <p class="lead text-muted animate__animated animate__fadeIn animate__delay-1s">We value your feedback. Please share your thoughts with us!</p>
+    </div>
+
+    <!-- Form Section -->
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-light animate__animated animate__fadeIn animate__delay-1.5s">
+                <div class="card-body p-4">
+                    <h2 class="card-title text-center text-primary mb-4">Create Testimonial</h2>
+
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="form-group mb-4">
+                            <label asp-for="Message" class="form-label fs-5 fw-semibold text-primary">Your Message</label>
+                            <textarea asp-for="Message" class="form-control form-control-lg" rows="4" placeholder="Enter your message..." style="border-color: #007bff;"></textarea>
+                            <span asp-validation-for="Message" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Submit Testimonial</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="mt-4 text-center">
+        <a asp-action="Testimonial" class="btn btn-outline-primary btn-lg">Back to Testimonials</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<!-- Add Animation CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">

@@ -1,0 +1,124 @@
+﻿@model rental.Models.UserAccount
+
+@{
+    ViewData["Title"] = "User Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- User Profile Start -->
+<div class="container py-5" style="background-color: #f8f9fa;">
+    <div class="row">
+        <!-- Profile Sidebar -->
+        <div class="col-lg-4">
+            <div class="card mb-4 shadow-lg border-primary rounded-lg bg-white">
+                <div class="card-body text-center">
+                    @if (!string.IsNullOrEmpty(Model.UserImage))
+                    {
+                        <img src="~/img/@Model.UserImage" alt="avatar" class="rounded-circle img-fluid border border-primary shadow-sm" style="width: 150px; height: 150px; object-fit: cover;">
+                    }
+                    else
+                    {
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar" class="rounded-circle img-fluid border border-primary shadow-sm" style="width: 150px; height: 150px; object-fit: cover;">
+                    }
+                    <h5 class="my-3 text-primary fw-bold animated fadeIn">@Model.UserName</h5>
+                    <p class="text-muted animated fadeIn">"@Model.Email"</p>
+
+                    <!-- Edit Profile Button -->
+                    <a asp-action="Edituser" asp-route-id="@Model.UserId" class="btn btn-outline-primary mt-3 px-5 rounded-pill animated fadeInUp" style="transition: background-color 0.3s ease;">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Details and Booking History -->
+        <div class="col-lg-8">
+            <!-- Profile Details Card -->
+            <div class="card mb-4 shadow-lg border-primary rounded-lg bg-white">
+                <div class="card-body">
+                    <h4 class="card-title text-primary fw-bold animated fadeInDown">Profile Details</h4>
+                    <hr class="bg-primary">
+                    <div class="row mb-3 animated fadeInLeft">
+                        <div class="col-sm-4">
+                            <p class="mb-0 fw-bold">Full Name:</p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="text-muted mb-0">@Model.UserName</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3 animated fadeInRight">
+                        <div class="col-sm-4">
+                            <p class="mb-0 fw-bold">Email:</p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="text-muted mb-0">@Model.Email</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3 animated fadeInLeft">
+                        <div class="col-sm-4">
+                            <p class="mb-0 fw-bold">Phone:</p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="text-muted mb-0">@Model.Phone</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3 animated fadeInRight">
+                        <div class="col-sm-4">
+                            <p class="mb-0 fw-bold">Location:</p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="text-muted mb-0">@Model.City</p>
+                        </div>
+
+                    </div>
+                    <div class="row mb-3 animated fadeInRight">
+                        <div class="col-sm-4">
+                            <p class="mb-0 fw-bold">Gender:</p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="text-muted mb-0">@Model.Gender</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Booking History Card -->
+            <div class="card mb-4 shadow-lg border-primary rounded-lg bg-white">
+                <div class="card-body">
+                    <h4 class="card-title text-primary fw-bold animated fadeInDown">Booking History</h4>
+                    <hr class="bg-primary">
+                    @if (ViewBag.UserTrips != null && ViewBag.UserTrips.Count > 0)
+                    {
+                        <table class="table table-striped table-hover animated fadeIn">
+                            <thead class="bg-primary text-white">
+                                <tr>
+                                    <th>Car Name</th>
+                                    <th>Pick Up Location</th>
+                                    <th>Drop Off Location</th>
+                                    <th>Pick Up Time</th>
+                                    <th>Drop Off Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var trip in ViewBag.UserTrips)
+                                {
+                                    <tr>
+                                        <td>@trip.CarIdfkNavigation.CarName</td>
+                                        <td>@trip.LocationPickup</td>
+                                        <td>@trip.LocationDrop</td>
+                                        <td>@trip.StartTime.ToString("g")</td>
+                                        <td>@trip.EndTime.ToString("g")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p class="text-muted animated fadeIn">You have no booking history.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- User Profile End -->

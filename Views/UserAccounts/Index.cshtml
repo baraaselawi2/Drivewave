@@ -1,0 +1,105 @@
+﻿@model IEnumerable<rental.Models.UserAccount>
+
+@{
+    ViewData["Title"] = "User Accounts";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<div class="container-fluid">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    <div class="row mb-4">
+        <div class="col">
+            <a asp-action="Create" class="btn btn-primary btn-lg">Create New User</a>
+        </div>
+    </div>
+
+    <!-- User Cards -->
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    @if (!string.IsNullOrEmpty(item.UserImage))
+                    {
+                        <img src="@Url.Content("~/img/" + item.UserImage)" class="card-img-top" alt="@item.UserName's image" style="height: 180px; object-fit: cover;" />
+                    }
+                    else
+                    {
+                        <img src="https://via.placeholder.com/300x180" class="card-img-top" alt="No Image Available" style="height: 180px; object-fit: cover;" />
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@item.UserName</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@item.Email</h6>
+                        <p class="card-text">
+                            <strong>Phone:</strong> @item.Phone <br />
+                            <strong>Creation Date:</strong> @item.CreatDate?.ToString("d MMM yyyy") <br />
+                            <strong>City:</strong> @item.City <br />
+                            <strong>Gender:</strong> @item.Gender <br />
+                            <strong>Password:</strong> @item.Password <br />
+                            <strong>UserID</strong> @item.UserId <br />
+                            <strong>Role:</strong> @item.Role
+                       
+
+                        </p>
+                        <a asp-action="Edit" asp-route-id="@item.UserId" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.UserId" class="btn btn-info btn-sm">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.UserId" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .container-fluid {
+        margin-top: 20px;
+    }
+
+    .btn-lg {
+        padding: 0.75rem 1.25rem;
+        font-size: 1.25rem;
+        line-height: 1.5;
+    }
+
+    .card {
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        overflow: hidden;
+    }
+
+    .card-img-top {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .card-body {
+        padding: 1.25rem;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .card-subtitle {
+        font-size: 1rem;
+        color: #6c757d;
+    }
+
+    .card-text {
+        font-size: 0.875rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        margin-right: 0.5rem;
+    }
+</style>

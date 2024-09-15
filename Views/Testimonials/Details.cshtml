@@ -1,0 +1,71 @@
+﻿@model rental.Models.Testimonial
+
+@{
+    ViewData["Title"] = "Testimonial Details";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<!-- Page Title -->
+
+
+<!-- Testimonial Information Card -->
+<div class="card shadow-lg border-0">
+    <div class="card-header bg-success text-white">
+        <h4 class="mb-0">Testimonial Information</h4>
+    </div>
+    <div class="card-body p-5">
+        <dl class="row mb-4">
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.UserName)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.UserName)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.Message)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Message)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.CreatDate)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.CreatDate)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.ImagePath)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.ImagePath)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.UserIdfkNavigation)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.UserIdfkNavigation.UserId)
+            </dd>
+        </dl>
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-outline-success btn-lg mr-2" asp-action="Edit" asp-route-id="@Model?.CommentId">
+                <i class="fas fa-edit mr-2"></i>Edit
+            </a>
+            <a class="btn btn-secondary btn-lg" asp-action="Index">
+                <i class="fas fa-arrow-left mr-2"></i>Back to List
+            </a>
+        </div>
+    </div>
+</div>

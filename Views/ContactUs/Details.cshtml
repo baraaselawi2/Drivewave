@@ -1,0 +1,64 @@
+﻿@model rental.Models.ContactU
+
+@{
+    ViewData["Title"] = "Contact Details";
+    Layout = "~/Views/Shared/_Layout1.cshtml";  // If you have a layout, you can uncomment this line
+}
+
+<!-- Page Title -->
+
+
+<!-- Contact Information Card -->
+<div class="card shadow-lg border-0">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Contact Information</h4>
+    </div>
+    <div class="card-body p-5">
+        <dl class="row mb-4">
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.FullName)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.FullName)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.Message)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Message)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.ContactDate)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.ContactDate)
+            </dd>
+
+            <dt class="col-sm-4 text-secondary">
+                @Html.DisplayNameFor(model => model.Subject)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Subject)
+            </dd>
+        </dl>
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-outline-primary btn-lg mr-2" asp-action="Edit" asp-route-id="@Model?.ContactId">
+                <i class="fas fa-edit mr-2"></i>Edit
+            </a>
+            <a class="btn btn-secondary btn-lg" asp-action="Index">
+                <i class="fas fa-arrow-left mr-2"></i>Back to List
+            </a>
+        </div>
+    </div>
+</div>

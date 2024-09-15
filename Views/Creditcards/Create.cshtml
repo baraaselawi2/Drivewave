@@ -1,0 +1,79 @@
+﻿@model rental.Models.Creditcard
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Create Credit Card</h1>
+
+    <h4 class="mb-3">Credit Card Details</h4>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                <div class="form-group">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Enter cardholder's name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Cvv" class="form-label"></label>
+                    <input asp-for="Cvv" class="form-control" placeholder="Enter CVV" type="text" maxlength="4" />
+                    <span asp-validation-for="Cvv" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Cardnumber" class="form-label"></label>
+                    <input asp-for="Cardnumber" class="form-control" placeholder="Enter card number" type="text" maxlength="16" />
+                    <span asp-validation-for="Cardnumber" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Expiredate" class="form-label"></label>
+                    <input asp-for="Expiredate" class="form-control" placeholder="Enter expiration date (MM/YY)" />
+                    <span asp-validation-for="Expiredate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Balance" class="form-label"></label>
+                    <input asp-for="Balance" class="form-control" placeholder="Enter balance" type="number" step="0.01" />
+                    <span asp-validation-for="Balance" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" placeholder="Enter your email" type="email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Useracountfk" class="form-label"></label>
+                    <select asp-for="Useracountfk" class="form-control" asp-items="ViewBag.Useracountfk">
+                        <option value="">Select user account</option>
+                    </select>
+                    <span asp-validation-for="Useracountfk" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-3">
+                    <input type="submit" value="Create" class="btn btn-primary btn-lg" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
