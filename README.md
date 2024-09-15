@@ -2,7 +2,11 @@
 Here's a draft you can use for your GitHub repository's README file to introduce DriveWave, including its key features, tech stack, and setup instructions:
 
 DriveWave 🚗
-DriveWave is a car rental platform that allows users to rent cars with professional drivers. Built using ASP.NET MVC (C#), the platform includes dedicated dashboards for drivers and admins, providing a seamless experience for all stakeholders involved.
+DriveWave is a car rental platform that allows users to rent cars with professional drivers. Built using ASP.NET MVC (C#), the platform includes dedicated dashboards for dr
+
+https://github.com/user-attachments/assets/f9bbde8f-2a99-40e3-97be-9b6958a82929
+
+ivers and admins, providing a seamless experience for all stakeholders involved.
 
 🚀 Features
 Driver Dashboard: Drivers can manage bookings, view earnings, and accept/reject trips.
